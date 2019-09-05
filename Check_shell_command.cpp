@@ -84,3 +84,54 @@ void run_pipe_cmds(char *argv[])
     execvp(args[0],args);
 
 }
+string file_redirection(char *argv[])
+{
+    string s=argv[0];
+    // int count=1;
+    int i;
+    for(i=1;argv[i]!=NULL;i++)
+    {
+        s=s+" "+argv[i];
+    }
+    string input="";
+    for(i=0;i<s.length();i++)
+    {
+        if(s[i]=='>')
+        break;
+        input+=s[i];
+    }
+    
+    conv_string_cmd_char(input,argv);
+    // cout<<input<<endl;
+    
+    if(s[i+1]=='>')
+    i++;
+
+    while(s[++i]==' ');
+    
+    
+    s=s.substr(i,s.length()-i);
+    // s.trim();
+    // cout<<s<<endl;
+    return s;
+    //???Left
+}
+
+
+void call_cd(char *argv[])
+{
+    if (chdir(argv[1]) != 0)  
+    {
+        cout<<"No such directory is present\n";
+    }
+    else
+    {
+        // char s[100];
+        //<<endl;
+        // cout<<argv[1]<<endl;
+        chdir(argv[1]);
+        // setenv("PWD",getcwd(s,100),1);
+        
+    }
+  
+}

@@ -5,6 +5,8 @@ using namespace std;
 int main()
 {
     // int k=2;
+
+    init_shell();
     while(1)
     {
         cout<<"$ ";
@@ -14,6 +16,13 @@ int main()
 
         if(strcmp(argv[0],"exit")==0)
         exit(0);
+
+        if(strcmp(argv[0],"cd")==0)
+        {
+            // cout<<"hello"<<endl;
+            call_cd(argv);
+            continue;
+        }
         // fflush(stdin);
         int pid=fork();
         
@@ -35,34 +44,47 @@ int main()
                 //     cout<<"shell built in\n";
                 // }
                 // else
-                if(argv[0]=="cd")
-                {
-                    // call_cd(argv);
-                }
-                else
-                execvp(argv[0],(char * const*)argv);
+                
+               
+                    run_pipe_cmds(argv);
+                    // execvp(argv[0],(char * const*)argv);
+                
             }
-            else if(status==1)//Only Pipe
-            {
-                // cout<<"PIPE\n";
-                run_pipe_cmds(argv);
-            }
+            
             else if(status==2)//Only >
             {
-                cout<<"Single Redirection\n";
+                // cout<<"Single Redirection\n";
+                string file=file_redirection(argv);
+                char file_copy[file.length()+1];
+
+                strcpy(file_copy,file.c_str());
+
+                int fd1=open(file_copy,O_CREAT|O_WRONLY,0644);
+                
+                dup2(fd1,1);
+                run_pipe_cmds(argv);
+                close(fd1);
+                
             }
-            else if(status==3)// > and pipe
-            {
-                cout<<"Pipe then Single Redirection\n";
-            }
+            
             else if(status==4)// Only >>
             {
-                cout<<"Double Redirection\n";
+                // cout<<"Double Redirection\n";
+                string file=file_redirection(argv);
+                char file_copy[file.length()+1];
+
+                strcpy(file_copy,file.c_str());
+
+                int fd1=open(file_copy,O_CREAT|O_WRONLY|O_APPEND,0644);
+
+                
+                dup2(fd1,1);
+                run_pipe_cmds(argv);
+                close(fd1);
+                
+                // cout<<file<<endl;
             }
-            else if(status==5)// >> and pipe
-            {
-                cout<<"Pipe then Double Redirection\n";
-            }
+            
             
             
             exit(0);

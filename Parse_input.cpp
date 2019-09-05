@@ -11,10 +11,10 @@ int read_input(char *argv[])
         c=getchar();
         if(c=='\n')
         break;
-        if(c=='|')
-        status=1;
+        
         if(c=='>')
         status+=2;
+        
         input+=c;
         // getline(cin,input);
     }

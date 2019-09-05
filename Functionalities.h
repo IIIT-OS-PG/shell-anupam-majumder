@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 #include<unistd.h>
-
+#include<termios.h>
 
 #include<stdlib.h>
 #include<stdio.h>
@@ -17,8 +17,13 @@
 #include <fcntl.h>
 using namespace std;
 
+
+void init_shell();
+
 int read_input(char *argv[]);
 void conv_string_cmd_char(string input,char *argv[]);
 
 void run_pipe_cmds(char *argv[]);
+string file_redirection(char *argv[]);
+void call_cd(char *argv[]);
 // bool check_shell_builtin(string cmd);
