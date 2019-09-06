@@ -13,9 +13,15 @@ int main()
         char *argv[2048];
         
         int status = read_input(argv);
+        
+        if(status==-1)
+        continue;
 
         if(strcmp(argv[0],"exit")==0)
-        exit(0);
+        {
+            disableRawMode();
+            exit(0);
+        }
 
         if(strcmp(argv[0],"cd")==0)
         {
@@ -59,7 +65,7 @@ int main()
 
                 strcpy(file_copy,file.c_str());
 
-                int fd1=open(file_copy,O_CREAT|O_WRONLY,0644);
+                int fd1=open(file_copy,O_CREAT|O_WRONLY|O_TRUNC,0644);
                 
                 dup2(fd1,1);
                 run_pipe_cmds(argv);

@@ -18,8 +18,14 @@
 using namespace std;
 
 
-void init_shell();
 
+
+void init_shell();
+void disableRawMode();
+
+
+void init_history();
+// void handle_sigint(int sig);
 int read_input(char *argv[]);
 void conv_string_cmd_char(string input,char *argv[]);
 
