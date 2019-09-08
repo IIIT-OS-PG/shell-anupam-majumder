@@ -2,14 +2,33 @@
 
 using namespace std;
 
+Env_var *map_var=new Env_var();
+
+
+string get_env(string x)
+{
+    x=trim(x);
+    if(map_var->env_list.find(x)!=map_var->env_list.end())
+    {
+        return map_var->env_list[x];
+    }
+    return "";
+}
+
 int main()
 {
+    
     // int k=2;
-
+    // // Uncomment from here
     init_shell();
+    // cerr<<"Hi";
+    init_history();
+    // cerr<<"Hi";
+    // trie();
+    
     while(1)
     {
-        cout<<"$ ";
+        cout<<map_var->env_list["$USER"]<<"@"<<map_var->env_list["$HOSTNAME"]<<map_var->env_list["$PS1"]<<" ";
         char *argv[2048];
         
         int status = read_input(argv);
@@ -19,16 +38,37 @@ int main()
 
         if(strcmp(argv[0],"exit")==0)
         {
+            write_history();
             disableRawMode();
             exit(0);
         }
-
+        
         if(strcmp(argv[0],"cd")==0)
         {
             // cout<<"hello"<<endl;
             call_cd(argv);
             continue;
         }
+        if(strcmp(argv[0],"history")==0)
+        {
+            read_history();
+            continue;
+        }
+
+        
+        // if(argv[1]!=NULL)
+        // {
+        //     string env_if(argv[1]);
+        //     if(map_var->env_list.find(env_if)!=NULL)
+        //     {
+        //         string env_if=get_env(env_if);
+        //         // argv[1]=(char *)malloc(env_if.length()+1)*sizeof(char))
+        //         strcpy(argv[1],env_if.c_str());
+                
+        //         // argv[1]=get_env(env_if).c_str();
+        //     }
+            
+        // }
         // fflush(stdin);
         int pid=fork();
         
@@ -102,5 +142,6 @@ int main()
         }
         // cout<<endl;
     }
-
+   
+    disableRawMode();
 }

@@ -13,6 +13,18 @@ using namespace std;
 //     return true;
 // }
 
+
+string trim(const string& str)
+{
+    size_t first = str.find_first_not_of(' ');
+    if (string::npos == first)
+    {
+        return str;
+    }
+    size_t last = str.find_last_not_of(' ');
+    return str.substr(first, (last - first + 1));
+}
+
 void run_pipe_cmds(char *argv[])
 {
     string s=argv[0];
@@ -33,6 +45,13 @@ void run_pipe_cmds(char *argv[])
     while(cmd!=NULL)
     {
         string x(cmd);
+        x=trim(x);
+        // cout<<x<<endl;
+        if(if_alias(x))
+        {
+            // cout<<"Yeah"
+            x=set_alias(x);
+        }
         a.push_back(x);
 
 
@@ -44,6 +63,10 @@ void run_pipe_cmds(char *argv[])
 
     //
     // int f=open("123.txt",O_CREAT|O_APPEND,0644);
+
+
+
+
     for(int i=0;i<a.size()-1;i++)
     {
         char *args[1024];
@@ -82,6 +105,11 @@ void run_pipe_cmds(char *argv[])
     conv_string_cmd_char(a[a.size()-1],args);
     // cout<<args[0]<<" "<<args[1]<<endl;
     execvp(args[0],args);
+
+    for(int i=0;i<a.size();i++)
+    {
+        cout<<a[i]<<endl;
+    }
 
 }
 string file_redirection(char *argv[])
