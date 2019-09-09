@@ -28,7 +28,7 @@ int main()
     
     while(1)
     {
-        cout<<map_var->env_list["$USER"]<<"@"<<map_var->env_list["$HOSTNAME"]<<map_var->env_list["$PS1"]<<" ";
+        cout<<map_var->env_list["$USER"]<<"@"<<map_var->env_list["$HOSTNAME"]<<" "<<map_var->env_list["$PS1"]<<" ";
         char *argv[2048];
         
         int status = read_input(argv);
